@@ -49,7 +49,7 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener {
         }
         if (state_start == BoradFrame.STATE_SERVICE) {  //如果是以服务器形式来启动
             System.out.println("以服务器形式来启动");
-            calculate = new Calculate(state_color);
+            //calculate = new Calculate(state_color);
             server = new Server(port, BoradPanel.this, state_color);    //创建SocketService
             new Thread() {
                 @Override
@@ -59,7 +59,7 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener {
             }.start();
         } else {
             System.out.println("以客户端形式来启动");
-            calculate = new Calculate(state_color);
+            //calculate = new Calculate(state_color);
             client = new Client(host, port, this, state_color);
             new Thread() {
                 @Override
@@ -73,7 +73,7 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener {
 
     //只添加而不立即得出下一步，用于第一次添加点 只有当黑子的时候才调用
     public void JustAdd() {
-        calculate.addPoint(new Point(10, 10, state_color));
+       // calculate.addPoint(new Point(10, 10, state_color));
         System.out.println("第一步");
         server.Put("10,10");
         Point point; // //服务器第一步。根据服务器自己选的颜色来落子
@@ -93,29 +93,29 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener {
             updateUI();
             flag++;
         }
-        if (calculate.JudegeWin(point)) {
-            calculate.addPoint(point);
-            points.add(point);  // 添加棋子到list中
-            updateUI();
+//        if (calculate.JudegeWin(point)) {
+//            calculate.addPoint(point);
+//            points.add(point);  // 添加棋子到list中
+//            updateUI();
+//
+//            Point result = calculate.getNext();
+//
+//            result.setState(state_color);
+//            calculate.addPoint(result);
+//            points.add(result);  // 添加棋子到list中
+//            updateUI();
+//            System.out.println("发送" + result.getX() + "---" + result.getY());
+//            if (server != null) {
+//                server.Put(result.getX() + "," + result.getY());
+//            } else {
+//                client.Put(result.getX() + "," + result.getY());
+//            }
 
-            Point result = calculate.getNext();
 
-            result.setState(state_color);
-            calculate.addPoint(result);
-            points.add(result);  // 添加棋子到list中
-            updateUI();
-            System.out.println("发送" + result.getX() + "---" + result.getY());
-            if (server != null) {
-                server.Put(result.getX() + "," + result.getY());
-            } else {
-                client.Put(result.getX() + "," + result.getY());
-            }
-
-
-        } else {
-            System.out.println("游戏结束");
-            System.exit(0);
-        }
+//        } else {
+//            System.out.println("游戏结束");
+//            System.exit(0);
+//        }
 
 
 
@@ -200,7 +200,7 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        ImageIcon board = new ImageIcon("drawable/board.png");
+         ImageIcon board = new ImageIcon("drawable/board.png");
         g.drawImage(board.getImage(), 0, 0, 740, 740, null);
 //        用于测试位置
 //        ImageIcon icon1 = new ImageIcon("drawable/white.png");

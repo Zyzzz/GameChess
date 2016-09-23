@@ -33,9 +33,9 @@ public class WaitClient extends JFrame implements DiyViews, ActionListener
         new Thread() {
             @Override
             public void run() {
-                BoradPanel panel = new BoradPanel(null, port, BoradFrame.STATE_SERVICE, state_color);
-                BoradFrame frame = new BoradFrame(panel,BoradFrame.STATE_SERVICE, state_color);
-                frame.setTitle("服务器端");
+               BoradPanel panel = new BoradPanel(null, port, BoradFrame.STATE_SERVICE, state_color);
+               BoradFrame frame = new BoradFrame(panel,BoradFrame.STATE_SERVICE, state_color);
+                //frame.setTitle("服务器端");
                 System.out.println("此处在客户端链接之后关闭");
                 isConnectionted = true; //用于中断label的不断刷新
                 WaitClient.this.dispose(); // 有客户端连接之后关闭当前窗口
@@ -90,20 +90,25 @@ public class WaitClient extends JFrame implements DiyViews, ActionListener
         };
         //JLable
 
-        String ip = null;
-
+        InetAddress ia=null;
+        String localip = "";
         try {
-            InetAddress addr = InetAddress.getLocalHost();
-            ip = addr.getHostAddress().toString();
-        } catch (UnknownHostException e) {
+            ia=ia.getLocalHost();
+
+            String localname=ia.getHostName();
+            localip=ia.getHostAddress();
+            System.out.println("本机名称是："+ localname);
+            System.out.println("本机的ip是 ："+localip);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         int  port = MainFrames.port;
-        label_host = new JLabel("    本机Ip为： " + ip);
+        label_host = new JLabel("    本机Ip为： " + localip);
         label_showMessahe = new JLabel("    等待客户端连接 .");
         label_port = new JLabel("    端口号为： " + port);
         //JButton
-        btnStartLocal = new ImageButton("    开始本地游戏");
+        btnStartLocal = new ImageButton("  开始本地双人游戏");
         btnCancle = new ImageButton("返回");
         //JPanel
         blankPanel = new BlankPanel(130);
@@ -175,17 +180,21 @@ public class WaitClient extends JFrame implements DiyViews, ActionListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        PlayerPanel playerPanel = null;
-        if (state_color == BoradFrame.STATE_BLACK) { // 如果服务器端选择黑子
-            playerPanel = new PlayerPanel(MainFrames.host, port, BoradFrame.STATE_WHITE);
-        } else {
-            playerPanel = new PlayerPanel(MainFrames.host, port, BoradFrame.STATE_BLACK);
-
+        if(e.getSource() == btnStartLocal ) {
+            PlayerPanel playerPanel = null;
+            if (state_color == BoradFrame.STATE_BLACK) { // 如果服务器端选择黑子
+                playerPanel = new PlayerPanel(MainFrames.host, port, BoradFrame.STATE_WHITE);
+            } else {
+                playerPanel = new PlayerPanel(MainFrames.host, port, BoradFrame.STATE_BLACK);
+            }
+            BoradFrame frame = new BoradFrame(playerPanel, BoradFrame.STATE_CLIENT, state_color);
+            frame.setTitle("客户端");
+            this.dispose();
         }
-
-        BoradFrame frame = new BoradFrame(playerPanel,BoradFrame.STATE_CLIENT, state_color);
-        frame.setTitle("客户端");
-        this.dispose();
+        else{
+            this.dispose();
+            MainFrames frame = new MainFrames();
+        }
     }
 
     public static void main(String[] args) {

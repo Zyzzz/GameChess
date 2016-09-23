@@ -53,7 +53,7 @@ public class BoradFrame extends JFrame implements DiyViews{
     public void setViews() {
         setContentPane(panel);
 //        setUndecorated(true);
-        setSize(740, 740);
+        setSize(740, 780);
         setLocationRelativeTo(null);
         setVisible(true);
     }

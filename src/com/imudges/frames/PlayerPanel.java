@@ -4,6 +4,7 @@ package com.imudges.frames;
 
 import com.imudges.interfaces.DiyViews;
 import com.imudges.socket.PlayerClient;
+import com.imudges.tool.Calculate;
 import com.imudges.tool.Point;
 import javax.swing.*;
 import java.awt.*;
@@ -21,10 +22,10 @@ public class PlayerPanel extends JPanel implements DiyViews, MouseListener {
     private PlayerClient client = null; // Client对象
     private java.util.List<Point> points;
     private int[][] datas = new int[20][20];
-    private int state_color  ;
+    private int state_color = BoradFrame.STATE_BLACK ;
 
     public PlayerPanel(String host, int port,  int state_color) {
-        this.state_color = state_color;
+        this.state_color = BoradFrame.STATE_BLACK ;;
         points = new ArrayList<>();
         initViews();
         setViews();
@@ -52,14 +53,28 @@ public class PlayerPanel extends JPanel implements DiyViews, MouseListener {
 
     //接收棋子添加到棋盘
     public void addPoint(Point point) {
-        if (datas[point.getX()][20-point.getY()] == 0) {
+        if (datas[point.getX()][19-point.getY()] == 0) {
             points.add(point);  // 添加棋子到list中
             if (state_color == BoradFrame.STATE_BLACK) {
-                datas[point.getX()][ 20-point.getY()]= 1;
+                datas[point.getX()][ 19-point.getY()]= 1;
+                state_color = BoradFrame.STATE_WHITE;
             } else {
-                datas[point.getX()][ 20-point.getY()]= -1;
+                datas[point.getX()][ 19-point.getY()]= -1;
+                state_color = BoradFrame.STATE_BLACK;
             }
+            System.out.println("X:"+point.getX()+"Y:"+(19-point.getY()));
+            Calculate calculate = new Calculate(datas,point.getX(),19-point.getY(),state_color);
+            boolean flag = calculate.checkWin();
             updateUI();
+            System.out.println(flag);
+            if(flag) {
+                if(state_color == BoradFrame.STATE_BLACK)
+                    JOptionPane.showMessageDialog(this,"白棋赢了");
+                else
+                    JOptionPane.showMessageDialog(this,"黑棋赢了");
+            }
+
+           // updateUI();
             //client.Put(point.getX() + "," + point.getY());
         }
 
@@ -111,15 +126,18 @@ public class PlayerPanel extends JPanel implements DiyViews, MouseListener {
             }
             //指定位置绘制指定图片
             //此处绘制已考虑边界，使用point在19*19棋盘中的坐标即可
-            if(point.getY()==1)
-            {
-                g.drawImage(icon.getImage(),point.getX()*37-14,710-28, 36, 36, null);
+            if(point.getY()==1 && point.getX()==1) {
+                g.drawImage(icon.getImage(),37-14,710-28, 36, 36, null);
+            }
+            else if(point.getY()==1) {
+                g.drawImage(icon.getImage(),point.getX()*37-16,710-28, 36, 36, null);
+            }
+            else if(point.getX()==1) {
+                g.drawImage(icon.getImage(),37-14,740-point.getY()*37-18, 36, 36, null);
             }
             else {
-                g.drawImage(icon.getImage(),point.getX()*37-14,740-point.getY()*37-18, 36, 36, null);
+                g.drawImage(icon.getImage(),point.getX()*37-16,740-point.getY()*37-18, 36, 36, null);
             }
-
-
         }
     }
 
@@ -145,12 +163,11 @@ public class PlayerPanel extends JPanel implements DiyViews, MouseListener {
             } else {
                 point = new Point(X, Y, Point.STATE_BLACK);
             }
-            points.add(point);
+            //points.add(point);
             addPoint(point);
         }
 
     }
-
     @Override
     public void mouseReleased(MouseEvent e) {
 

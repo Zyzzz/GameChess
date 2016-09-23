@@ -3,6 +3,7 @@ package com.imudges.socket;
 
 
 import com.imudges.frames.BoradFrame;
+//import com.imudges.frames.BoradPanel;
 import com.imudges.frames.BoradPanel;
 import com.imudges.interfaces.Call;
 import com.imudges.tool.Point;
@@ -25,7 +26,7 @@ public class Server implements Call {
     private Socket socket = null;
     private int state_color ; // 用于存放已方所选棋子颜色
 
-    public Server(int port, BoradPanel panel ,  int state_color) {
+    public Server(int port, BoradPanel panel , int state_color) {
         this.panel = panel;
         this.state_color = state_color;
         try {
@@ -35,8 +36,6 @@ public class Server implements Call {
             e.printStackTrace();
         }
     }
-
-
 
     //向输入流中发送数据
     public void Send(String s) {
@@ -95,7 +94,6 @@ public class Server implements Call {
                 } else {
                     point = new Point(x, y, Point.STATE_BLACK);
                     System.out.println("Service get Blank");
-
                 }
                 panel.addPoint(point);
             }
