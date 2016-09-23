@@ -2,22 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1c16a517-98a6-47f3-ab3c-cbfaaaabf650" name="Default" comment="客户端链接界面">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GameChess/com/imudges/frames/BoradPanel$1.class" afterPath="$PROJECT_DIR$/out/production/GameChess/com/imudges/frames/BoradPanel$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GameChess/com/imudges/frames/BoradPanel$2.class" afterPath="$PROJECT_DIR$/out/production/GameChess/com/imudges/frames/BoradPanel$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GameChess/com/imudges/frames/BoradPanel.class" afterPath="$PROJECT_DIR$/out/production/GameChess/com/imudges/frames/BoradPanel.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GameChess/com/imudges/interfaces/Call.class" afterPath="$PROJECT_DIR$/out/production/GameChess/com/imudges/interfaces/Call.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GameChess/com/imudges/socket/Client.class" afterPath="$PROJECT_DIR$/out/production/GameChess/com/imudges/socket/Client.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GameChess/com/imudges/socket/PlayerClient.class" afterPath="$PROJECT_DIR$/out/production/GameChess/com/imudges/socket/PlayerClient.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GameChess/com/imudges/socket/Server.class" afterPath="$PROJECT_DIR$/out/production/GameChess/com/imudges/socket/Server.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/imudges/frames/BoradPanel.java" afterPath="$PROJECT_DIR$/src/com/imudges/frames/BoradPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/imudges/frames/ConnectService.java" afterPath="$PROJECT_DIR$/src/com/imudges/frames/ConnectService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/imudges/frames/MainFrames.java" afterPath="$PROJECT_DIR$/src/com/imudges/frames/MainFrames.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/imudges/frames/PlayerPanel.java" afterPath="$PROJECT_DIR$/src/com/imudges/frames/PlayerPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/imudges/interfaces/Call.java" afterPath="$PROJECT_DIR$/src/com/imudges/interfaces/Call.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/imudges/socket/Client.java" afterPath="$PROJECT_DIR$/src/com/imudges/socket/Client.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/imudges/socket/PlayerClient.java" afterPath="$PROJECT_DIR$/src/com/imudges/socket/PlayerClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/imudges/socket/Server.java" afterPath="$PROJECT_DIR$/src/com/imudges/socket/Server.java" />
     </list>
     <list id="aa152416-47dc-4708-97f1-f26f7181a414" name="Rejected commit: Default" comment="客户端链接界面" />
     <ignored path="GameChess.iws" />
@@ -85,12 +71,26 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BoradPanel.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="BoradPanel.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/imudges/frames/BoradPanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.38131315">
-              <caret line="129" column="9" selection-start-line="129" selection-start-column="9" selection-end-line="129" selection-end-column="9" />
-              <folding />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="233" column="0" selection-start-line="233" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
+              <folding>
+                <element signature="method#paintComponent#0;class#BoradPanel#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PlayerPanel.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/imudges/frames/PlayerPanel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.3409091">
+              <caret line="101" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
+              <folding>
+                <element signature="method#paintComponent#0;class#PlayerPanel#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -120,9 +120,9 @@
         <option value="$PROJECT_DIR$/src/com/imudges/socket/PlayerClient.java" />
         <option value="$PROJECT_DIR$/src/com/imudges/frames/MainFrames.java" />
         <option value="$PROJECT_DIR$/src/com/imudges/frames/ConnectService.java" />
+        <option value="$PROJECT_DIR$/src/com/imudges/socket/Server.java" />
         <option value="$PROJECT_DIR$/src/com/imudges/frames/PlayerPanel.java" />
         <option value="$PROJECT_DIR$/src/com/imudges/frames/BoradPanel.java" />
-        <option value="$PROJECT_DIR$/src/com/imudges/socket/Server.java" />
       </list>
     </option>
   </component>
@@ -1022,7 +1022,7 @@
       <workItem from="1474428478605" duration="5336000" />
       <workItem from="1474465032409" duration="17668000" />
       <workItem from="1474618344204" duration="6386000" />
-      <workItem from="1474629730540" duration="6721000" />
+      <workItem from="1474629730540" duration="7104000" />
     </task>
     <task id="LOCAL-00001" summary="客户端链接界面">
       <created>1474615897290</created>
@@ -1034,7 +1034,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43183000" />
+    <option name="totallyTimeSpent" value="43566000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -1046,7 +1046,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1105,6 +1105,12 @@
           <properties />
           <option name="timeStamp" value="22" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/imudges/frames/PlayerPanel.java</url>
+          <line>55</line>
+          <properties />
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/com/imudges/frames/BoradPanel.java</url>
           <line>216</line>
@@ -1112,7 +1118,7 @@
           <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="25" />
+      <option name="time" value="27" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1161,7 +1167,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="56" column="19" selection-start-line="56" selection-start-column="19" selection-end-line="56" selection-end-column="19" />
-          <folding />
+          <folding>
+            <element signature="method#paintComponent#0;class#BoradPanel#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1203,7 +1211,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="89" column="68" selection-start-line="89" selection-start-column="68" selection-end-line="89" selection-end-column="68" />
-          <folding />
+          <folding>
+            <element signature="method#paintComponent#0;class#BoradPanel#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1486,19 +1496,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/imudges/frames/PlayerPanel.java">
+    <entry file="file://$PROJECT_DIR$/src/com/imudges/frames/BoradPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.7752526">
-          <caret line="159" column="49" selection-start-line="159" selection-start-column="49" selection-end-line="159" selection-end-column="49" />
-          <folding />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="233" column="0" selection-start-line="233" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
+          <folding>
+            <element signature="method#paintComponent#0;class#BoradPanel#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/imudges/frames/BoradPanel.java">
+    <entry file="file://$PROJECT_DIR$/src/com/imudges/frames/PlayerPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38131315">
-          <caret line="129" column="9" selection-start-line="129" selection-start-column="9" selection-end-line="129" selection-end-column="9" />
-          <folding />
+        <state vertical-scroll-proportion="0.3409091">
+          <caret line="101" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
+          <folding>
+            <element signature="method#paintComponent#0;class#PlayerPanel#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -117,12 +117,22 @@ public class PlayerPanel extends JPanel implements DiyViews, MouseListener {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        int i = 1;
         for (Point point : points) {
             ImageIcon icon = null;
-            if (point.getState() == com.imudges.tool.Point.STATE_WHITE) {
-                icon = new ImageIcon("drawable/white.png"); // 指定白旗资源
-            } else {
-                icon = new ImageIcon("drawable/black.png"); // 指定黑棋资源
+            if (i==points.size()) {
+                if (point.getState() == com.imudges.tool.Point.STATE_WHITE) {
+                    icon = new ImageIcon("drawable/lastwhite.png"); // 指定白旗资源
+                } else {
+                    icon = new ImageIcon("drawable/lastblack.png"); // 指定黑棋资源
+                }
+            } else{
+                if (point.getState() == com.imudges.tool.Point.STATE_WHITE) {
+                    icon = new ImageIcon("drawable/white.png"); // 指定白旗资源
+                } else {
+                    icon = new ImageIcon("drawable/black.png"); // 指定黑棋资源
+                }
+                i++;
             }
             //指定位置绘制指定图片
             //此处绘制已考虑边界，使用point在19*19棋盘中的坐标即可
