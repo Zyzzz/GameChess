@@ -948,12 +948,19 @@
       <workItem from="1474373085958" duration="1728000" />
       <workItem from="1474379624602" duration="5344000" />
       <workItem from="1474428478605" duration="5336000" />
-      <workItem from="1474465032409" duration="17519000" />
+      <workItem from="1474465032409" duration="17582000" />
     </task>
+    <task id="LOCAL-00001" summary="客户端链接界面">
+      <created>1474615897290</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1474615897290</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29927000" />
+    <option name="totallyTimeSpent" value="29990000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
