@@ -25,8 +25,8 @@ public class MainFrames extends JFrame implements DiyViews,ActionListener{
     private JLabel BackLabel , label_message; //背景标签
     private ImageIcon icon = new ImageIcon("drawable/welcome.png");
 
-    private int select_state =  1;//BoradFrame.STATE_SERVICE; // 启动方式。 默认为服务器方式
-    private int select_color =   1;//BoradFrame.STATE_BLACK; // 棋子颜色，默认为黑子
+    private int select_state =  BoradFrame.STATE_SERVICE; // 启动方式。 默认为服务器方式
+    private int select_color =   BoradFrame.STATE_BLACK; // 棋子颜色，默认为黑子
     int mx = 0, my = 0, jfx = 0, jfy = 0;
     private BlankPanel blankPanel ; // 透明面板
     private int Frame_width = 1000 ;
@@ -95,14 +95,14 @@ public class MainFrames extends JFrame implements DiyViews,ActionListener{
         btnClose = new ImageButton("  关闭  ");
         //JPanel
         blankPanel = new BlankPanel(180);
-        if (select_state == 1) {
+        if (select_state == BoradFrame.STATE_SERVICE) {
             selectService.setState("slectied");
             selectClient.setState("normal");
         } else {
             selectService.setState("normal");
             selectClient.setState("slectied");
         }
-        if (select_color == 1) {
+        if (select_color == BoradFrame.STATE_BLACK) {
             selectBlack.setState("slectied");
             selectWhite.setState("normal");
         } else {
@@ -189,7 +189,8 @@ public class MainFrames extends JFrame implements DiyViews,ActionListener{
             if (select_state == BoradFrame.STATE_SERVICE) {
                 //服务器模式
                 WaitClient frame = new WaitClient(MainFrames.port, select_color);
-                System.out.println("服务器模式，为黑子");
+                frame.setTitle("客户端");
+                //System.out.println("服务器模式，为黑子");
                 this.dispose();
             } else {
 //                客户端模式

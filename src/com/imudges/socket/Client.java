@@ -42,6 +42,7 @@ public class Client implements Call {
         }
         return true;
     }
+
     //发送数据到输入流
     public void Send(String s) {
         PrintWriter writer = null;
@@ -72,7 +73,7 @@ public class Client implements Call {
 
     //获取到数据，并且调用BoradPanel的addPoint方法添加穿进来的点
     @Override
-    public void Get() {
+    public String Get() {
         BufferedReader reader = null; // 获取读入对象
         try {
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream())); // 获取输入流
@@ -87,20 +88,9 @@ public class Client implements Call {
                 e.printStackTrace();
             }
             if (str != null) {
-                String[] data = str.split(",");
-                int x = Integer.valueOf(data[0]);
-                int y = Integer.valueOf(data[1]);
-
-                Point point = null;
-                if (state_color == 1) {
-                    point = new Point(x, y, Point.STATE_WHITE);
-                } else {
-                    point = new Point(x, y, Point.STATE_BLACK);
-                }
-               panel.addPoint(point); //添加棋子到棋盘
+              return str;
             }
-
         }
-
+       // return "";
     }
 }

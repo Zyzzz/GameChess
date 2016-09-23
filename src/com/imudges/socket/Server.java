@@ -60,7 +60,7 @@ public class Server implements Call {
 
     public void addFirstPoint() {
         Put("10,10");
-        panel.JustAdd();
+        //panel.JustAdd();
     }
     //Put方法，用与发送数据，供BoradPanel来调用
     @Override
@@ -72,7 +72,7 @@ public class Server implements Call {
     //Get方法，此方法会阻塞线程，所以在创建服务器对象之后，要通过线程的方式来使用此方法
     //此方法会一直执行，获取传进的数据，并使用BoradPanel引用来添加点到面板
     @Override
-    public void Get() {
+    public String Get() {
         try {
             //获取输入流
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -84,21 +84,13 @@ public class Server implements Call {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                String[] data = str.split(","); //分割内容
-                int x = Integer.valueOf(data[0]);
-                int y = Integer.valueOf(data[1]);
-                Point point = null;
-                if (state_color == BoradFrame.STATE_BLACK) { // 如果我方为黑子。 则穿进来的子为白子
-                    point = new Point(x, y, Point.STATE_WHITE) ;
-                    System.out.println("Service get White");
-                } else {
-                    point = new Point(x, y, Point.STATE_BLACK);
-                    System.out.println("Service get Blank");
+                if (str != null) {
+                    return str;
                 }
-                panel.addPoint(point);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return "";
     }
 }

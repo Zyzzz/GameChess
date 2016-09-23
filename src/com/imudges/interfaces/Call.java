@@ -13,6 +13,6 @@ package com.imudges.interfaces;
 public interface Call {
     public void Put(String s);
 
-    public void Get();
+    public String Get();
 
 }

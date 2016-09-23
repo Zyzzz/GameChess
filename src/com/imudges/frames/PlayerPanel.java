@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 
 public class PlayerPanel extends JPanel implements DiyViews, MouseListener {
-    private PlayerClient client = null; // Client对象
+    //private PlayerClient client = null; // Client对象
     private java.util.List<Point> points;
     private int[][] datas = new int[20][20];
     private int state_color = BoradFrame.STATE_BLACK ;

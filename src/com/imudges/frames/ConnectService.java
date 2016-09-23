@@ -75,7 +75,6 @@ public class ConnectService extends JFrame implements DiyViews, ActionListener {
                 super.paint(g);
                 icon.paintIcon(this, g, 0, 0);
             }
-
         };
         //JLabel
         blankPanel = new BlankPanel(180);
@@ -136,7 +135,7 @@ public class ConnectService extends JFrame implements DiyViews, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnStart) {
-            String host = MainFrames.host;
+            String host = label_host.getText();
             if (Client.TestConnection(host, MainFrames.port)) {
 
                 if (state_color == BoradFrame.STATE_BLACK) {
@@ -163,7 +162,6 @@ public class ConnectService extends JFrame implements DiyViews, ActionListener {
                 ConnectedError frame = new ConnectedError();
             }
         }
-
         if (e.getSource() == btnCancle) {
             MainFrames welcomeFrame = new MainFrames();
             ConnectService.this.dispose();

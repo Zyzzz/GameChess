@@ -64,7 +64,7 @@ public class PlayerClient implements Call {
 
     //获取到数据，并且调用BoradPanel的addPoint方法添加穿进来的点
     @Override
-    public void Get() {
+    public String Get() {
         BufferedReader reader = null; // 获取读入对象
         try {
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream())); // 获取输入流

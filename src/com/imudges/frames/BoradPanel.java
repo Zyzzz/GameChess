@@ -15,6 +15,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +24,7 @@ import java.util.ArrayList;
  * 根据Service或者Client的Get方法来添加棋子，故在创建Service或者Client对象的时候要传入BoradPanel对象
  * 发送棋子调用的是Service或者Client的Put方法
  */
-public class BoradPanel extends JPanel implements DiyViews, ActionListener {
+public class BoradPanel extends JPanel implements DiyViews, ActionListener,MouseListener {
     private java.util.List<Point> points;  //用于存放棋盘中存在的点
     private Server server = null; // Service对象
     private Client client = null; // Client对象
@@ -33,7 +35,9 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener {
     private JLabel label_messagge; // 开始的提示信息
     private JButton btnBegin;
     private int flag = 1;
+    private boolean waitFlag;
 
+    private int[][] datas = new int[20][20];
     //传入参数， ip（供客户端使用）  端口号（均使用） 启动方式（启动客户端获取服务器端）  棋子颜色（白子或黑子）
     public BoradPanel(String host, int port, int state_start, int state_color) {
         this.state_start = state_start;
@@ -47,6 +51,8 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+       // if()
+
         if (state_start == BoradFrame.STATE_SERVICE) {  //如果是以服务器形式来启动
             System.out.println("以服务器形式来启动");
             //calculate = new Calculate(state_color);
@@ -54,7 +60,15 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener {
             new Thread() {
                 @Override
                 public void run() {
-                    server.Get(); // 在客户端连接之前会阻塞，且要持续运行来接受数据
+                    String s = server.Get();// 在客户端连接之前会阻塞，且要持续运行来接受数据
+                    while (true) {
+                        if (s != "1") {
+                            s = server.Get();
+                        } else {
+                            server.Put("1");
+                            break;
+                        }
+                    }
                 }
             }.start();
         } else {
@@ -64,34 +78,55 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener {
             new Thread() {
                 @Override
                 public void run() {
-                    client.Get();
+                    client.Put("1");
+                    String s = client.Get();
+                    //String s = server.Get();// 在客户端连接之前会阻塞，且要持续运行来接受数据
+                    while (true) {
+                        if (s != "1") {
+                            s = server.Get();
+                        } else {
+                            break;
+                        }
+                    }
                 }
             }.start();
         }
 
     }
 
-    //只添加而不立即得出下一步，用于第一次添加点 只有当黑子的时候才调用
-    public void JustAdd() {
-       // calculate.addPoint(new Point(10, 10, state_color));
-        System.out.println("第一步");
-        server.Put("10,10");
-        Point point; // //服务器第一步。根据服务器自己选的颜色来落子
-        if (state_color == BoradFrame.STATE_BLACK) {
-            point = new Point(10, 10, Point.STATE_BLACK);
-        } else {
-            point = new Point(10, 10, Point.STATE_WHITE);
-        }
-        points.add(point);
-    }
 
     //接收棋子添加到棋盘 // 需要判断所选颜色
     public void addPoint(Point point) {
-        System.out.println("添加棋子"+point.getX()+"----"+point.getY());
+        System.out.println("添加棋子" + point.getX() + "----" + point.getY());
         if (flag == 1) {
             this.remove(beginpanel);
             updateUI();
             flag++;
+        }
+        if (datas[point.getX()][19 - point.getY()] == 0) {
+            points.add(point);  // 添加棋子到list中
+            if (waitFlag) {
+                if (state_color == BoradFrame.STATE_WHITE)
+                    datas[point.getX()][19 - point.getY()] = 1;
+                else
+                    datas[point.getX()][19 - point.getY()] = -1;
+            } else {
+                if (state_color == BoradFrame.STATE_WHITE)
+                    datas[point.getX()][19 - point.getY()] = -1;
+                else
+                    datas[point.getX()][19 - point.getY()] = 1;
+            }
+            System.out.println("X:" + point.getX() + "Y:" + (19 - point.getY()));
+            Calculate calculate = new Calculate(datas, point.getX(), 19 - point.getY(), state_color);
+            boolean winFlag = calculate.checkWin();
+            updateUI();
+            System.out.println(winFlag);
+            if (winFlag) {
+                if (state_color == BoradFrame.STATE_BLACK)
+                    JOptionPane.showMessageDialog(this, "白棋赢了");
+                else
+                    JOptionPane.showMessageDialog(this, "黑棋赢了");
+            }
         }
 //        if (calculate.JudegeWin(point)) {
 //            calculate.addPoint(point);
@@ -118,9 +153,6 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener {
 //        }
 
 
-
-
-
 //        if (result != null) {
 
 //            if (state_color == BoradFrame.STATE_BLACK) {
@@ -132,7 +164,8 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener {
 //        } else {
 //            System.out.println("游戏结束");
 //            System.exit(0);
-        }
+
+    }
 
 
 
@@ -189,7 +222,7 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener {
         }
 
         beginpanel.add(label_messagge);
-        if (state_start == BoradFrame.STATE_SERVICE) {
+        if (state_color == BoradFrame.STATE_BLACK) {
             beginpanel.add(btnBegin);
         }
         this.add(beginpanel);
@@ -200,16 +233,13 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-         ImageIcon board = new ImageIcon("drawable/board.png");
+        ImageIcon board = new ImageIcon("drawable/board.png");
         g.drawImage(board.getImage(), 0, 0, 740, 740, null);
-//        用于测试位置
+////        用于测试位置
 //        ImageIcon icon1 = new ImageIcon("drawable/white.png");
-//        g.drawImage(icon1.getImage(), 15,  680, 36, 36, null);
-//        g.drawImage(icon1.getImage(),  (14+19*35),680-19*35,35,   35, null);
-//        g.drawImage(icon1.getImage(),  14+10*34,695-10*35,35,   35, null);
-//        g.drawImage(icon1.getImage(),  682,15,35,   35, null);
-//        g.drawImage(icon1.getImage(),  352,15,35,   35, null);
-
+//        g.drawImage(icon1.getImage(),18 ,  18, 36, 36, null);
+//        g.drawImage(icon1.getImage(), 19 * 36 -5, 19 *36-5, 36, 36, null);
+//        g.drawImage(icon1.getImage(), 19 * 33+26 , 19 * 33+23, 36, 36, null);
         //循环list中的所有点，根据点的颜色属性来指定不同的图片资源
         try {
             Thread.sleep(100);
@@ -218,16 +248,72 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener {
         }
         for (Point point : points) {
             ImageIcon icon = null;
-            if (point.getState() == Point.STATE_WHITE) {
+            if (point.getState() == com.imudges.tool.Point.STATE_WHITE) {
                 icon = new ImageIcon("drawable/white.png"); // 指定白旗资源
             } else {
                 icon = new ImageIcon("drawable/black.png"); // 指定黑棋资源
             }
             //指定位置绘制指定图片
             //此处绘制已考虑边界，使用point在19*19棋盘中的坐标即可
-//            g.drawImage(icon.getImage(), point.getX() * 34 + 14, 695-point.getY() * 35 , 36, 36, null);
-            g.drawImage(icon.getImage(), point.getX() * 36 - 9, 710 - point.getY() * 36 - 5, 36, 36, null);
+            if(point.getY()==1 && point.getX()==1) {
+                g.drawImage(icon.getImage(),37-14,710-28, 36, 36, null);
+            }
+            else if(point.getY()==1) {
+                g.drawImage(icon.getImage(),point.getX()*37-16,710-28, 36, 36, null);
+            }
+            else if(point.getX()==1) {
+                g.drawImage(icon.getImage(),37-14,740-point.getY()*37-18, 36, 36, null);
+            }
+            else {
+                g.drawImage(icon.getImage(),point.getX()*37-16,740-point.getY()*37-18, 36, 36, null);
+            }
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if(waitFlag) {
+            int x = e.getX();
+            int y = e.getY();
+            System.out.println(x + "," + y);
+            Point point = null;
+            int X = (x) / 36;
+            int Y = (745 - y) / 36;
+            System.out.println(X + ":" + Y);
+            if (X > 0 && X < 20 && Y > 0 && Y < 20) {
+                System.out.println("发送" + X + ":" + Y);
+                if ((state_color == BoradFrame.STATE_WHITE)) {
+                    point = new Point(X, Y, Point.STATE_WHITE);
+                } else {
+                    point = new Point(X, Y, Point.STATE_BLACK);
+                }
+                //points.add(point);
+                addPoint(point);
+            }else {
+
+            }
+        }
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 
     //用于刷新 （自定义的不刷新全部的刷新方法，虽然刷新全部不会影响整体性能）
@@ -241,7 +327,12 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener {
         if (e.getSource() == btnBegin) {
             this.remove(beginpanel);
             updateUI();
-            JustAdd();
+            if(state_color == BoradFrame.STATE_BLACK){
+                waitFlag = true;
+            }else {
+                waitFlag = false;
+            }
+          //  JustAdd();
         }
     }
 }
