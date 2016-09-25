@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * 根据Service或者Client的Get方法来添加棋子，故在创建Service或者Client对象的时候要传入BoradPanel对象
  * 发送棋子调用的是Service或者Client的Put方法
  */
-public class BoradPanel extends JPanel implements DiyViews, ActionListener,MouseListener {
+public class BoradPanel extends JPanel implements DiyViews,MouseListener {
     private java.util.List<Point> points;  //用于存放棋盘中存在的点
     private Server server = null; // Service对象
     private Client client = null; // Client对象
@@ -51,49 +51,60 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener,Mouse
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-       // if()
-
+        if (state_color == BoradFrame.STATE_BLACK) {
+            waitFlag = true;
+        } else {
+            waitFlag = false;
+        }
         if (state_start == BoradFrame.STATE_SERVICE) {  //如果是以服务器形式来启动
             System.out.println("以服务器形式来启动");
-            //calculate = new Calculate(state_color);
-            server = new Server(port, BoradPanel.this, state_color);    //创建SocketService
-            new Thread() {
-                @Override
-                public void run() {
-                    String s = server.Get();// 在客户端连接之前会阻塞，且要持续运行来接受数据
-                    while (true) {
-                        if (s != "1") {
-                            s = server.Get();
-                        } else {
-                            server.Put("1");
-                            break;
-                        }
-                    }
-                }
-            }.start();
+            server = new Server(port);     //创建SocketService
+            server.Put("开始");
         } else {
             System.out.println("以客户端形式来启动");
-            //calculate = new Calculate(state_color);
-            client = new Client(host, port, this, state_color);
-            new Thread() {
-                @Override
-                public void run() {
-                    client.Put("1");
-                    String s = client.Get();
-                    //String s = server.Get();// 在客户端连接之前会阻塞，且要持续运行来接受数据
-                    while (true) {
-                        if (s != "1") {
-                            s = server.Get();
-                        } else {
-                            break;
-                        }
-                    }
-                }
-            }.start();
+            client = new Client(host, port);
+            String s = client.Get();
+            System.out.println(s);
         }
-
+        if (!waitFlag) {
+            getPoint();
+            }
     }
 
+
+    private  void getPoint(){
+        new Thread() {
+            @Override
+            public void run() {
+                Point point = null;
+                if (state_start == BoradFrame.STATE_SERVICE) {
+                    String s = server.Get();
+                    System.out.println(s);
+                    String[] data = s.split(","); //分割内容
+                    int nextX = Integer.valueOf(data[0]);
+                    int nextY = Integer.valueOf(data[1]);
+                    if ((state_color == BoradFrame.STATE_WHITE)) {
+                        point = new Point(nextX, nextY, Point.STATE_BLACK);
+                    } else {
+                        point = new Point(nextX, nextY, Point.STATE_WHITE);
+                    }
+                    addPoint(point);
+                } else {
+                    String s = client.Get();
+                    System.out.println(s);
+                    String[] data = s.split(","); //分割内容
+                    int nextX = Integer.valueOf(data[0]);
+                    int nextY = Integer.valueOf(data[1]);
+                    if ((state_color == BoradFrame.STATE_WHITE)) {
+                        point = new Point(nextX, nextY, Point.STATE_BLACK);
+                    } else {
+                        point = new Point(nextX, nextY, Point.STATE_WHITE);
+                    }
+                    addPoint(point);
+                }
+            }
+        }.start();
+    }
 
     //接收棋子添加到棋盘 // 需要判断所选颜色
     public void addPoint(Point point) {
@@ -103,71 +114,77 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener,Mouse
             updateUI();
             flag++;
         }
+        Calculate calculate = null;
         if (datas[point.getX()][19 - point.getY()] == 0) {
             points.add(point);  // 添加棋子到list中
             if (waitFlag) {
                 if (state_color == BoradFrame.STATE_WHITE)
-                    datas[point.getX()][19 - point.getY()] = 1;
-                else
                     datas[point.getX()][19 - point.getY()] = -1;
+                else
+                    datas[point.getX()][19 - point.getY()] = 1;
             } else {
                 if (state_color == BoradFrame.STATE_WHITE)
-                    datas[point.getX()][19 - point.getY()] = -1;
-                else
                     datas[point.getX()][19 - point.getY()] = 1;
+                else
+                    datas[point.getX()][19 - point.getY()] = -1;
             }
             System.out.println("X:" + point.getX() + "Y:" + (19 - point.getY()));
-            Calculate calculate = new Calculate(datas, point.getX(), 19 - point.getY(), state_color);
-            boolean winFlag = calculate.checkWin();
+            int whoWin=-1;
+            boolean winFlag = false;
+            if (waitFlag) {
+                if (state_color == BoradFrame.STATE_WHITE) {
+                    calculate = new Calculate(datas, point.getX(), 19 - point.getY(), BoradFrame.STATE_WHITE);
+                    winFlag = calculate.checkWin();
+                    if(winFlag){
+                        whoWin = 1;
+                    }
+                }
+                else {
+                    calculate = new Calculate(datas, point.getX(), 19 - point.getY(), BoradFrame.STATE_BLACK);
+                    winFlag = calculate.checkWin();
+                    if(winFlag){
+                        whoWin = 2;
+                    }
+                }
+            } else {
+                if (state_color == BoradFrame.STATE_WHITE) {
+                    calculate = new Calculate(datas, point.getX(), 19 - point.getY(), BoradFrame.STATE_BLACK);
+                    winFlag = calculate.checkWin();
+                    if(winFlag){
+                        whoWin = 2;
+                    }
+                }
+                else {
+                    calculate = new Calculate(datas, point.getX(), 19 - point.getY(), BoradFrame.STATE_WHITE);
+                    winFlag = calculate.checkWin();
+                    if(winFlag){
+                        whoWin = 1;
+                    }
+                }
+            }
+
             updateUI();
-            System.out.println(winFlag);
+           // System.out.println(winFlag);
+            if(waitFlag) {
+                if(state_start == BoradFrame.STATE_SERVICE){
+                    server.Put(""+point.getX()+","+point.getY());
+                }else {
+                    client.Put(""+point.getX()+","+point.getY());
+                }
+                waitFlag = false;
+            }else{
+                waitFlag = true;
+            }
             if (winFlag) {
-                if (state_color == BoradFrame.STATE_BLACK)
-                    JOptionPane.showMessageDialog(this, "白棋赢了");
-                else
-                    JOptionPane.showMessageDialog(this, "黑棋赢了");
+                if(whoWin==1) {
+                    JOptionPane.showMessageDialog(this, "白球赢了");
+                }else {
+                        JOptionPane.showMessageDialog(this, "黑棋赢了");
+                }
             }
         }
-//        if (calculate.JudegeWin(point)) {
-//            calculate.addPoint(point);
-//            points.add(point);  // 添加棋子到list中
-//            updateUI();
-//
-//            Point result = calculate.getNext();
-//
-//            result.setState(state_color);
-//            calculate.addPoint(result);
-//            points.add(result);  // 添加棋子到list中
-//            updateUI();
-//            System.out.println("发送" + result.getX() + "---" + result.getY());
-//            if (server != null) {
-//                server.Put(result.getX() + "," + result.getY());
-//            } else {
-//                client.Put(result.getX() + "," + result.getY());
-//            }
-
-
-//        } else {
-//            System.out.println("游戏结束");
-//            System.exit(0);
-//        }
-
-
-//        if (result != null) {
-
-//            if (state_color == BoradFrame.STATE_BLACK) {
-//                result.setState(Point.STATE_BLACK);
-//            } else {
-//                result.setState(Point.STATE_WHITE);
-//            }
-
-//        } else {
-//            System.out.println("游戏结束");
-//            System.exit(0);
 
     }
-
-
 
     @Override
     public void initViews() {
@@ -209,7 +226,17 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener,Mouse
         label_messagge.setBounds(10, 100, 220, 40);
         //Jbutton
         btnBegin.setBounds(80, 180, 80, 40);
-        btnBegin.addActionListener(this);
+        addMouseListener(this);
+        btnBegin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == btnBegin) {
+                    beginpanel.setVisible(false);
+                    //updateUI();
+                    //  JustAdd();
+                }
+            }
+        });
     }
 
     //添加组件
@@ -282,11 +309,12 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener,Mouse
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        System.out.println("hahaha");
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        System.out.println("hahaha22");
         if(waitFlag) {
             int x = e.getX();
             int y = e.getY();
@@ -296,7 +324,7 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener,Mouse
             int Y = (745 - y) / 36;
             System.out.println(X + ":" + Y);
             if (X > 0 && X < 20 && Y > 0 && Y < 20) {
-                System.out.println("发送" + X + ":" + Y);
+                 System.out.println("发送" + X + ":" + Y);
                 if ((state_color == BoradFrame.STATE_WHITE)) {
                     point = new Point(X, Y, Point.STATE_WHITE);
                 } else {
@@ -304,8 +332,10 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener,Mouse
                 }
                 //points.add(point);
                 addPoint(point);
-            }else {
+                getPoint();
 
+            }else {
+                System.out.println("不是你下棋的时候");
             }
         }
 
@@ -332,17 +362,5 @@ public class BoradPanel extends JPanel implements DiyViews, ActionListener,Mouse
 
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnBegin) {
-            this.remove(beginpanel);
-            updateUI();
-            if(state_color == BoradFrame.STATE_BLACK){
-                waitFlag = true;
-            }else {
-                waitFlag = false;
-            }
-          //  JustAdd();
-        }
-    }
+
 }

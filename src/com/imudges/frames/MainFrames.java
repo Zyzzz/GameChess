@@ -18,7 +18,7 @@ public class MainFrames extends JFrame implements DiyViews,ActionListener{
     //指定全局端口号
     public static int port = 9527;
     //全局IP地址 。默认为本地主机IP
-    public static String host = "127.1.0.0";
+    public static String host = "127.0.0.1";
     private JButton btnStart , btnClose; // 启动按钮
     private SelectButton selectService, selectClient, selectBlack, selectWhite; // 启动方式，颜色选择
     private JLabel lable_select_state, label_select_color; // 指示选择方式，选择颜色的按钮

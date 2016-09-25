@@ -8,10 +8,7 @@ import com.imudges.frames.BoradPanel;
 import com.imudges.interfaces.Call;
 import com.imudges.tool.Point;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -26,8 +23,8 @@ public class Server implements Call {
     private Socket socket = null;
     private int state_color ; // 用于存放已方所选棋子颜色
 
-    public Server(int port, BoradPanel panel , int state_color) {
-        this.panel = panel;
+    public Server(int port) {
+      //  this.panel = panel;
         this.state_color = state_color;
         try {
             serverSocket = new ServerSocket(port); //根据端口号创建对象
@@ -45,8 +42,16 @@ public class Server implements Call {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        writer.println(s); // 写入数据
+        writer.println(s);
         writer.flush(); // 刷新输出流
+//        Writer writer = null;
+//        try {
+//            writer = new OutputStreamWriter(socket.getOutputStream());
+//            writer.write(s);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
     }
 
     //关闭连接
@@ -58,10 +63,7 @@ public class Server implements Call {
         }
     }
 
-    public void addFirstPoint() {
-        Put("10,10");
-        //panel.JustAdd();
-    }
+
     //Put方法，用与发送数据，供BoradPanel来调用
     @Override
     public void Put(String s) {
@@ -73,24 +75,17 @@ public class Server implements Call {
     //此方法会一直执行，获取传进的数据，并使用BoradPanel引用来添加点到面板
     @Override
     public String Get() {
-        try {
             //获取输入流
-            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            while (true) {
+            BufferedReader reader = null; // 获取读入对象
+            try {
+                reader = new BufferedReader(new InputStreamReader(socket.getInputStream())); // 获取输入流
                 String str = null;
-                try {
-                    str = reader.readLine(); // 读取内容
-//                    System.out.println(str);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (str != null) {
+                while ((str = reader.readLine()) != null) {
                     return str;
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return "";
     }
 }

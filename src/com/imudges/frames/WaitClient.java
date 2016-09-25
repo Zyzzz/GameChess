@@ -35,7 +35,7 @@ public class WaitClient extends JFrame implements DiyViews, ActionListener
             public void run() {
                BoradPanel panel = new BoradPanel(null, port, BoradFrame.STATE_SERVICE, state_color);
                BoradFrame frame = new BoradFrame(panel,BoradFrame.STATE_SERVICE, state_color);
-                //frame.setTitle("服务器端");
+                frame.setTitle("服务器端");
                 System.out.println("此处在客户端链接之后关闭");
                 isConnectionted = true; //用于中断label的不断刷新
                 WaitClient.this.dispose(); // 有客户端连接之后关闭当前窗口
@@ -188,7 +188,7 @@ public class WaitClient extends JFrame implements DiyViews, ActionListener
                 playerPanel = new PlayerPanel(MainFrames.host, port, BoradFrame.STATE_BLACK);
             }
             BoradFrame frame = new BoradFrame(playerPanel, BoradFrame.STATE_CLIENT, state_color);
-            frame.setTitle("客户端");
+            frame.setTitle("单机");
             this.dispose();
         }
         else{

@@ -7,10 +7,7 @@ import com.imudges.frames.BoradPanel;
 import com.imudges.tool.Point;
 
 import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -24,9 +21,9 @@ public class Client implements Call {
     private BoradPanel panel;       //棋盘的引用对象，用于调用addPoint方法
     private int state_color; // 用于存放已方所选棋子颜色
 
-    public Client(String host, int port,BoradPanel panel, int state_color) { // 新建客户端程序要传入三个数据，host地址，端口号，棋盘对象
-        this.panel = panel;
-        this.state_color = state_color;
+    public Client(String host, int port) { // 新建客户端程序要传入三个数据，host地址，端口号，棋盘对象
+       // this.panel = panel;
+       // this.state_color = state_color;
         try {
             socket = new Socket(host, port);
         } catch (IOException e) {
@@ -46,8 +43,13 @@ public class Client implements Call {
     //发送数据到输入流
     public void Send(String s) {
         PrintWriter writer = null;
+
         try {
             writer = new PrintWriter(socket.getOutputStream()); //获取输出流对象
+//            DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
+//            outputToClient.writeUTF(s + "\r\n");
+//            System.out.println(s + "\r\n");
+          //  outputToClient.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,20 +79,15 @@ public class Client implements Call {
         BufferedReader reader = null; // 获取读入对象
         try {
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream())); // 获取输入流
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        while (true) {
             String str = null;
-            try {
-                str = reader.readLine(); //读取内容
-            } catch (IOException e) {
+            while ((str = reader.readLine()) != null) {
+                    return str;
+            }
+        }
+        catch (IOException e) {
                 e.printStackTrace();
-            }
-            if (str != null) {
-              return str;
-            }
         }
        // return "";
+        return "";
     }
 }

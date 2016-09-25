@@ -135,9 +135,8 @@ public class ConnectService extends JFrame implements DiyViews, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnStart) {
-            String host = label_host.getText();
-            if (Client.TestConnection(host, MainFrames.port)) {
-
+            String host = text_host.getText();
+            //if (Client.TestConnection(host, MainFrames.port)) {
                 if (state_color == BoradFrame.STATE_BLACK) {
                     new Thread() {
                         @Override
@@ -158,9 +157,10 @@ public class ConnectService extends JFrame implements DiyViews, ActionListener {
                         }
                     }.start();
                 }
-            } else {
-                ConnectedError frame = new ConnectedError();
-            }
+                this.dispose();
+//            } else {
+//                ConnectedError frame = new ConnectedError();
+//            }
         }
         if (e.getSource() == btnCancle) {
             MainFrames welcomeFrame = new MainFrames();

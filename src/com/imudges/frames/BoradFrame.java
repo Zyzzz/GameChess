@@ -28,21 +28,21 @@ public class BoradFrame extends JFrame implements DiyViews{
         setViews();
         addViews();
         addViews();
-        this.addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                setLocation(e.getXOnScreen() - mx + jfx, e.getYOnScreen() - my + jfy);
-            }
-        });
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                mx = e.getXOnScreen();
-                my = e.getYOnScreen();
-                jfx = getX();
-                jfy = getY();
-            }
-        });
+//        this.addMouseMotionListener(new MouseMotionAdapter() {
+//            @Override
+//            public void mouseDragged(MouseEvent e) {
+//                setLocation(e.getXOnScreen() - mx + jfx, e.getYOnScreen() - my + jfy);
+//            }
+//        });
+//        this.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//                mx = e.getXOnScreen();
+//                my = e.getYOnScreen();
+//                jfx = getX();
+//                jfy = getY();
+//            }
+//        });
     }
 
     @Override
@@ -56,6 +56,7 @@ public class BoradFrame extends JFrame implements DiyViews{
         setSize(740, 780);
         setLocationRelativeTo(null);
         setVisible(true);
+
     }
 
     @Override

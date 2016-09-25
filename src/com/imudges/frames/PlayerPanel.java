@@ -3,7 +3,6 @@ package com.imudges.frames;
 
 
 import com.imudges.interfaces.DiyViews;
-import com.imudges.socket.PlayerClient;
 import com.imudges.tool.Calculate;
 import com.imudges.tool.Point;
 import javax.swing.*;
@@ -79,11 +78,11 @@ public class PlayerPanel extends JPanel implements DiyViews, MouseListener {
         }
 
     }
-
-    public void receivePoint(Point point) {
-        points.add(point);  // 添加棋子到list中
-        updateUI();
-    }
+//
+//    public void receivePoint(Point point) {
+//        points.add(point);  // 添加棋子到list中
+//        updateUI();
+//    }
 
     @Override
     public void initViews() {
